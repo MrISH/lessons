@@ -1,7 +1,17 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+# Create 100 lessons, with 3 parts for each lesson
+
+(1..100).step(1) do |lesson_num|
+
+	# Find and assign lesson by `lesson_num`
+	l = Lesson.includes(:lesson_parts).where(name: "L#{ lesson_num }", progression_order: lesson_num).first_or_create!
+	puts "seeding L#{ lesson_num }"
+
+	# Test presence of required LessonParts, create if necessary
+	unless l.lesson_parts.pluck(:name).sort == ['P1', 'P2', 'P3'].sort
+		(1..3).step(1) do |step_num|
+			l.lesson_parts.where(name: "P#{ step_num }").first_or_create!
+			puts "seeding #{ l.name } P#{ step_num }"
+		end
+	end
+
+end

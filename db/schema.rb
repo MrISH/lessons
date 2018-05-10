@@ -10,9 +10,62 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_10_050200) do
+ActiveRecord::Schema.define(version: 2018_05_10_051102) do
+
+  create_table "classroom_students", force: :cascade do |t|
+    t.integer "classroom_id"
+    t.integer "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["classroom_id"], name: "index_classroom_students_on_classroom_id"
+    t.index ["student_id"], name: "index_classroom_students_on_student_id"
+  end
+
+  create_table "classrooms", force: :cascade do |t|
+    t.integer "teacher_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["teacher_id"], name: "index_classrooms_on_teacher_id"
+  end
+
+  create_table "lesson_parts", force: :cascade do |t|
+    t.integer "lesson_id"
+    t.integer "progression_order"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_lesson_parts_on_lesson_id"
+    t.index ["progression_order"], name: "index_lesson_parts_on_progression_order"
+  end
+
+  create_table "lessons", force: :cascade do |t|
+    t.string "name"
+    t.integer "progression_order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_lessons_on_name"
+    t.index ["progression_order"], name: "index_lessons_on_progression_order"
+  end
+
+  create_table "student_lesson_progresses", force: :cascade do |t|
+    t.integer "student_id"
+    t.integer "lesson_id"
+    t.integer "lesson_part_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_student_lesson_progresses_on_lesson_id"
+    t.index ["lesson_part_id"], name: "index_student_lesson_progresses_on_lesson_part_id"
+    t.index ["student_id"], name: "index_student_lesson_progresses_on_student_id"
+  end
 
   create_table "students", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "teachers", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.datetime "created_at", null: false

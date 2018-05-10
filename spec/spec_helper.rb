@@ -58,6 +58,19 @@ RSpec.configure do |config|
     end
   end
 
+  config.before(:suite) do
+    (1..100).step(1) do |lesson_num|
+      # Find and assign lesson by `lesson_num`
+      l = Lesson.includes(:lesson_parts).where(name: "L#{ lesson_num }", progression_order: lesson_num).first_or_create!
+      # Test presence of required LessonParts, create if necessary
+      unless l.lesson_parts.pluck(:name).sort == ['P1', 'P2', 'P3'].sort
+        (1..3).step(1) do |step_num|
+          l.lesson_parts.where(name: "P#{ step_num }").first_or_create!
+        end
+      end
+    end
+  end
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

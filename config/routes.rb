@@ -6,8 +6,8 @@ Rails.application.routes.draw do
 
 		namespace :v1 do
 			resources :students, only: [:create, :update] do
-				put :lesson_progress, on: :member
-				get :lesson_progress, on: :member
+				put :update_lesson_progress, on: :member
+				get :get_lesson_progress, on: :member
 			end
 		end
 
