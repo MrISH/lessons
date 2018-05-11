@@ -13,7 +13,7 @@ RSpec.describe API::V1::StudentsController, type: :request do
       it "returns JSON representation of student and their lack of lesson progress" do
         get "/api/v1/students/#{ @student.id }/get_lesson_progress"
 
-        expect(JSON.parse(response.body)).to eq(JSON.parse({student: @student, lesson_progress: { id: 0, lesson_id: 0, lesson_part_id: 0 }}.to_json))
+        expect(JSON.parse(response.body)).to eq(JSON.parse({student: @student, lesson_progress: { lesson_number: 0, lesson_part_number: 0 }}.to_json))
       end
 
     end
@@ -29,7 +29,7 @@ RSpec.describe API::V1::StudentsController, type: :request do
       it "returns JSON representation of student and their existing lesson progress" do
         get "/api/v1/students/#{ @student.id }/get_lesson_progress"
 
-        expect(JSON.parse(response.body)).to eq(JSON.parse({student: @student, lesson_progress: { id: @progress.id, lesson_id: @lesson.id, lesson_part_id: @lesson_part.id }}.to_json))
+        expect(JSON.parse(response.body)).to eq(JSON.parse({student: @student, lesson_progress: { lesson_number: @lesson.progression_order, lesson_part_number: @lesson_part.progression_order }}.to_json))
       end
 
     end
@@ -50,9 +50,9 @@ RSpec.describe API::V1::StudentsController, type: :request do
       end
 
       it "updates student's lesson progress and returns JSON representation of student and their new lesson progress" do
-        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_id: @lesson.id, lesson_part_id: @lesson_part.id } }
+        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_number: @lesson.progression_order, lesson_part_number: @lesson_part.progression_order } }
 
-        expect(JSON.parse(response.body)).to eq(JSON.parse({student: @student, lesson_progress: { id: StudentLessonProgress.last!.id, lesson_id: @lesson.id, lesson_part_id: @lesson_part.id }}.to_json))
+        expect(JSON.parse(response.body)).to eq(JSON.parse({student: @student, lesson_progress: { lesson_number: @lesson.progression_order, lesson_part_number: @lesson_part.progression_order }}.to_json))
       end
 
     end
@@ -68,9 +68,9 @@ RSpec.describe API::V1::StudentsController, type: :request do
       end
 
       it "updates student's lesson progress and returns JSON representation of student and their new lesson progress" do
-        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_id: @new_lesson.id, lesson_part_id: @new_lesson_part.id } }
+        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_number: @new_lesson.progression_order, lesson_part_number: @new_lesson_part.progression_order } }
 
-        expect(JSON.parse(response.body)).to eq(JSON.parse({student: @student, lesson_progress: { id: StudentLessonProgress.last!.id, lesson_id: @new_lesson.id, lesson_part_id: @new_lesson_part.id } }.to_json))
+        expect(JSON.parse(response.body)).to eq(JSON.parse({student: @student, lesson_progress: { lesson_number: @new_lesson.progression_order, lesson_part_number: @new_lesson_part.progression_order } }.to_json))
       end
 
     end
@@ -78,9 +78,9 @@ RSpec.describe API::V1::StudentsController, type: :request do
     context "existing student with no progress, invalid new lesson data" do
 
       it "returns JSON error message" do
-        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_id: 1_000_000, lesson_part_id: 1_000_000 } }
+        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_number: 1_000_000, lesson_part_number: 1_000_000 } }
 
-        expect(response.body).to eq({ error: 'No lesson with that id' }.to_json)
+        expect(response.body).to eq({ error: 'No lesson with that number' }.to_json)
       end
 
     end
@@ -88,9 +88,9 @@ RSpec.describe API::V1::StudentsController, type: :request do
     context "existing student with no progress, invalid new lesson part data" do
 
       it "returns JSON error message" do
-        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_id: Lesson.first!.id, lesson_part_id: 1_000_000 } }
+        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_number: Lesson.first!.id, lesson_part_number: 1_000_000 } }
 
-        expect(response.body).to eq({ error: 'No lesson part with that id' }.to_json)
+        expect(response.body).to eq({ error: 'No lesson part with that number' }.to_json)
       end
 
     end
@@ -104,9 +104,9 @@ RSpec.describe API::V1::StudentsController, type: :request do
       end
 
       it "returns JSON error message" do
-        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_id: 1_000_000, lesson_part_id: 1_000_000 } }
+        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_number: 1_000_000, lesson_part_number: 1_000_000 } }
 
-        expect(response.body).to eq({ error: 'No lesson with that id' }.to_json)
+        expect(response.body).to eq({ error: 'No lesson with that number' }.to_json)
       end
 
     end
@@ -120,9 +120,9 @@ RSpec.describe API::V1::StudentsController, type: :request do
       end
 
       it "returns JSON error message" do
-        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_id: Lesson.second!.id, lesson_part_id: 1_000_000 } }
+        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_number: Lesson.second!.progression_order, lesson_part_number: 1_000_000 } }
 
-        expect(response.body).to eq({ error: 'No lesson part with that id' }.to_json)
+        expect(response.body).to eq({ error: 'No lesson part with that number' }.to_json)
       end
 
     end

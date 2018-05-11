@@ -98,8 +98,8 @@ class API::V1::StudentsController < ApplicationController
 	def permitted_student_progress_params
 		params.require(:student).permit(
 			:id,
-      :lesson_id,
-      :lesson_part_id,
+      :lesson_number,
+      :lesson_part_number,
 		)
 	end
 
