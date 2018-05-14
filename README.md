@@ -122,28 +122,58 @@ Run rspec specs
 ## Wrap up
 
 ### Part 1
-    Initially implemented as a full Rails app, but rebuilt using `--api` flag to reduce overhead and keep the API solely as an API.
-    Added API endpoints to create and update students, along with their lesson progress.
-    Utilised `dry-transcation` gem to create service objects to handle data changes. This was intended to keep the controller and model code succinct and relevant, and allow for easier developemnt and refactoring in the future. This was a brand new gem for me, which I wished to learn to use, as I liked the idea behind it.
-    I had started looking into using `rom-rb` and `dry-types`, as they also were of interest to me to learn, but they required quite a large investment of time, which I did not have. I am even more inclined to learn them after looking into them during this project.
+    Initially implemented as a full Rails app, but rebuilt using `--api` flag 
+    to reduce overhead and keep the API solely as an API.
+    Added API endpoints to create and update students, along with their lesson 
+    progress.
+    Utilised `dry-transcation` gem to create service objects to handle data 
+    changes. This was intended to keep the controller and model code succinct 
+    and relevant, and allow for easier developemnt and refactoring in the 
+    future. This was a brand new gem for me, which I wished to learn to use, 
+    as I liked the idea behind it.
+    I had started looking into using `rom-rb` and `dry-types`, as they also 
+    were of interest to me to learn, but they required quite a large 
+    investment of time, which I did not have. I am even more inclined to learn 
+    them after looking into them during this project.
     Rspec test coverage created for both valid and invalid requests
     Model specs are not complete due to time contstraints.
 
 ### Part 2
-    Opted to create a client app to keep the Rails API an API, and because I was interested in the process of doing this.
-    Arbitrarily chose ReactJS, as I have no experience in client side apps, and that came as popular.
+    Opted to create a client app to keep the Rails API an API, and because I 
+    was interested in the process of doing this.
+    Arbitrarily chose ReactJS, as I have no experience in client side apps, 
+    and that came as popular.
     This necessitated learning ReactJS, and how to run it within a Rails app.
-    No tests were created for the client app itself, and minimal tests for the API endpoint that drives the report page.
-    Intended to allow report to swtich between teachers, pagination of students list, and filtering on classrooms, lesson, and lesson part, however the learning curve was significant, and time was short already, so this was parked.
-    API endpoint has functionality to filter by a teacher, and a classroom, or return all students for a teacher.
+    No tests were created for the client app itself, and minimal tests for the 
+    API endpoint that drives the report page.
+    Intended to allow report to swtich between teachers, pagination of 
+    students list, and filtering on classrooms, lesson, 
+    and lesson part, however the learning curve was significant, and time was
+    short already, so this was parked.
+    API endpoint has functionality to filter by a teacher, and a classroom, or 
+    return all students for a teacher.
     Missing "classroom" column from report due to time contraints.
 
 ### Part 3
-    Added method to `Student` model `progress_to_lesson(lesson:, lesson_part:)`, called from within `UpdateStudentLessonProgress`. This method will only allow a student to progress to the next lesson or lesson part after their current lesson/part.
-    The code is first implementation, and would do well with a refactor to clean it up and make it more readable. It also needs tests written for it.
+    Added method to `Student` model `progress_to_lesson(lesson:, lesson_part:)`, 
+    called from within `UpdateStudentLessonProgress`. This method will only 
+    allow a student to progress to the next lesson or lesson part after their 
+    current lesson/part.
+    The code is first implementation, and would do well with a refactor to 
+    clean it up and make it more readable. It also needs tests written for it.
 
 
 ### Summary
-    I would say this project began well, with a reasonable amount of time spent building the app structure, investigating new gems and determining which would be worth learning and using and which ones to leave. I made some assumptions around the wording of the project requirements, and so included the create/update student API endpoints.
-    Implementing the report as a client app was a large task, which I knew from the outset, however I wished to not use Rails for views, and keep it as an API only application. In doing so I ran out of time to add complete tests for the report API and the lesson progression guard in Step 3.
-    I probably overly complicated the lesson / lesson part relationship, where this could have resided in a single model. I was thinking of these models as potentially containing the lesson / lesson part content as well, and decided to make them separate models/tables.
+    I would say this project began well, with a reasonable amount of time 
+    spent building the app structure, investigating new gems and determining 
+    which would be worth learning and using and which ones to leave. I made 
+    some assumptions around the wording of the project requirements, and so 
+    included the create/update student API endpoints.
+    Implementing the report as a client app was a large task, which I knew 
+    from the outset, however I wished to not use Rails for views, and keep it 
+    as an API only application. In doing so I ran out of time to add complete 
+    tests for the report API and the lesson progression guard in Step 3.
+    I probably overly complicated the lesson / lesson part relationship, where 
+    this could have resided in a single model. I was thinking of these models 
+    as potentially containing the lesson / lesson part content as well, and 
+    decided to make them separate models/tables.
