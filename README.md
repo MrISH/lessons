@@ -110,9 +110,9 @@ To get development environment set up
     yarn start
 ```
 
-Teachers report will be available at `http://localhost:3000`
-API can also be accessed at `http://localhost:3000/api`, 
-ie. `http://localhost:3000/api/v1/students/report.json?teacher_id=1&classroom_id=2`
+- Teachers report will be available at `http://localhost:3000`
+- API can also be accessed at `http://localhost:3000/api`
+- ie. `http://localhost:3000/api/v1/students/report.json?teacher_id=1`
 
 ## Tests
 Run rspec specs
