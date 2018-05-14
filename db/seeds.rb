@@ -15,3 +15,44 @@
 	end
 
 end
+
+# Create two Teachers, with two classroom each, and some students for each, or both, classrooms
+teacher_1 	= Teacher.where(first_name: 'Sir', last_name: 'Teach').first_or_create!
+classroom_1 = teacher_1.classrooms.where(name: 'First Class').first_or_create!
+classroom_2 = teacher_1.classrooms.where(name: 'Third Class').first_or_create!
+
+teacher_2 	= Teacher.where(first_name: 'Miss', last_name: 'Teach').first_or_create!
+classroom_3 = teacher_2.classrooms.where(name: 'Second Class').first_or_create!
+classroom_4 = teacher_2.classrooms.where(name: 'Fourth Class').first_or_create!
+
+
+student_1 = Student.where(first_name: 'Little', 	last_name: 'John').first_or_create!
+student_2 = Student.where(first_name: 'Friar', 		last_name: 'Tuck').first_or_create!
+student_3 = Student.where(first_name: 'Robbin', 	last_name: 'Hood').first_or_create!
+student_4 = Student.where(first_name: 'Maid', 		last_name: 'Marian').first_or_create!
+student_5 = Student.where(first_name: 'Sheriff', 	last_name: 'Nottingham').first_or_create!
+student_6 = Student.where(first_name: 'Sir', 			last_name: 'Hiss').first_or_create!
+
+classroom_1.students = [
+	student_1,
+	student_2,
+]
+
+classroom_2.students = [
+	student_3,
+	student_4,
+]
+
+classroom_3.students = [
+	student_5,
+	student_6,
+]
+
+classroom_4.students = [
+	student_1,
+	student_2,
+	student_3,
+	student_4,
+	student_5,
+	student_6,
+]

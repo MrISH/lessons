@@ -34,6 +34,16 @@ RSpec.describe API::V1::StudentsController, type: :request do
 
     end
 
+    context "request student that does not exist" do
+
+      it "returns JSON error message" do
+        get "/api/v1/students/1000000/get_lesson_progress"
+
+        expect(response.body).to eq({error: 'No student with that id'}.to_json)
+      end
+
+    end
+
   end
 
   describe 'PUT /api/v1/students/:id/update_lesson_progress' do
@@ -123,6 +133,51 @@ RSpec.describe API::V1::StudentsController, type: :request do
         put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_number: Lesson.second!.progression_order, lesson_part_number: 1_000_000 } }
 
         expect(response.body).to eq({ error: 'No lesson part with that number' }.to_json)
+      end
+
+    end
+
+    context "updating a student that does not exist" do
+
+      it "returns JSON error message" do
+        put "/api/v1/students/1000000/update_lesson_progress", params: { student: { id: 1_000_000, lesson_number: 1_000_000, lesson_part_number: 1_000_000 } }
+
+        expect(response.body).to eq({error: 'No student with that id'}.to_json)
+      end
+
+    end
+
+    context "updating a student to a too advanced lesson" do
+
+      it "returns JSON error message" do
+        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_number: Lesson.second!.progression_order, lesson_part_number: 1 } }
+
+        expect(response.body).to eq({error: 'Cannot skip lessons'}.to_json)
+      end
+
+    end
+
+    context "updating a student to a too advanced lesson part" do
+
+      it "returns JSON error message" do
+        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_number: Lesson.first!.progression_order, lesson_part_number: 3 } }
+
+        expect(response.body).to eq({error: 'Cannot skip lesson parts'}.to_json)
+      end
+
+    end
+
+    context "updating a student to previous lesson part" do
+      before(:example) do
+        @lesson           = Lesson.third!
+        @lesson_part      = @lesson.lesson_parts.first!
+        @progress         = StudentLessonProgress.where(student: @student, lesson: @lesson, lesson_part: @lesson_part).first_or_create
+      end
+
+      it "returns JSON error message" do
+        put "/api/v1/students/#{ @student.id }/update_lesson_progress", params: { student: { id: @student.id, lesson_number: Lesson.first!.progression_order, lesson_part_number: 3 } }
+
+        expect(JSON.parse(response.body)).to eq(JSON.parse({student: @student, lesson_progress: { lesson_number: @lesson.progression_order, lesson_part_number: @lesson_part.progression_order } }.to_json))
       end
 
     end

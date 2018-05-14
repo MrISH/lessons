@@ -12,20 +12,21 @@
 
 ActiveRecord::Schema.define(version: 2018_05_10_051102) do
 
-  create_table "classroom_students", force: :cascade do |t|
+  create_table "classrooms", force: :cascade do |t|
+    t.integer "teacher_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["teacher_id"], name: "index_classrooms_on_teacher_id"
+  end
+
+  create_table "classrooms_students", force: :cascade do |t|
     t.integer "classroom_id"
     t.integer "student_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["classroom_id"], name: "index_classroom_students_on_classroom_id"
-    t.index ["student_id"], name: "index_classroom_students_on_student_id"
-  end
-
-  create_table "classrooms", force: :cascade do |t|
-    t.integer "teacher_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["teacher_id"], name: "index_classrooms_on_teacher_id"
+    t.index ["classroom_id"], name: "index_classrooms_students_on_classroom_id"
+    t.index ["student_id"], name: "index_classrooms_students_on_student_id"
   end
 
   create_table "lesson_parts", force: :cascade do |t|

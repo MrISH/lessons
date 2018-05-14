@@ -51,6 +51,13 @@ GEM
       msgpack (~> 1.0)
     builder (3.2.3)
     coderay (1.1.2)
+    coffee-rails (4.2.2)
+      coffee-script (>= 2.2.0)
+      railties (>= 4.0.0)
+    coffee-script (2.4.1)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.1)
     crass (1.0.4)
@@ -109,6 +116,7 @@ GEM
       method_source (~> 0.9.0)
     puma (3.11.4)
     rack (2.0.5)
+    rack-cors (1.0.2)
     rack-proxy (0.6.4)
       rack
     rack-test (1.0.0)
@@ -196,11 +204,13 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (>= 1.1.0)
+  coffee-rails (~> 4.2)
   database_cleaner
   dry-transaction
   listen (>= 3.0.5, < 3.2)
   pry
   puma (~> 3.11)
+  rack-cors
   rails (~> 5.2.0)
   react-rails
   rspec-rails (~> 3.7)
@@ -213,4 +223,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.16.0
+   1.16.1

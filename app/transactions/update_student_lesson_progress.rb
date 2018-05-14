@@ -1,6 +1,6 @@
 require "dry/transaction"
 
-class UpdateStudentProgress
+class UpdateStudentLessonProgress
   include Dry::Transaction
 
   step :process
@@ -28,10 +28,10 @@ class UpdateStudentProgress
     if student = Student.find_by(id: input[:id])
       if lesson = Lesson.find_by(progression_order: input[:lesson_number])
         if lesson_part = lesson.lesson_parts.find_by(progression_order: input[:lesson_part_number])
-          if progress = StudentLessonProgress.where(student: student, lesson: lesson, lesson_part: lesson_part).first_or_create
-            Success(student.reload.highest_lesson_progress)
+          if (progress = student.progress_to_lesson(lesson: lesson,lesson_part: lesson_part)).success
+            Success(progress.result)
           else
-            Failure(progress.errors.full_messages)
+            Failure(progress.error)
           end
         else
           Failure(:no_lesson_part_with_that_number)
