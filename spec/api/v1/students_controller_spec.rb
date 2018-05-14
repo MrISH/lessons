@@ -292,4 +292,26 @@ RSpec.describe API::V1::StudentsController, type: :request do
 
   end
 
+  describe 'PUT /api/v1/students/report' do
+
+    before(:context) do
+      @teacher            = Teacher.where(first_name: 'Sir', last_name: 'Teach').first_or_create!
+      @classroom          = @teacher.classrooms.where(name: 'First Class').first_or_create!
+      @student            = Student.create(first_name: 'Little', last_name: 'John')
+      @classroom.students = [@student]
+    end
+
+    context "valid data" do
+
+      it "returns JSON respresentation of all of a teachers students" do
+        get "/api/v1/students/report", params: { teacher_id: @teacher.id }
+
+        expect(response.body).to eq({ students: [@student.reload.as_hash] }.to_json)
+      end
+
+    end
+
+  end
+
+
 end
