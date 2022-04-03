@@ -10,7 +10,7 @@ gem 'sqlite3'
 # Part of dry-rb. Read more: http://dry-rb.org
 gem 'dry-transaction'
 # Use Puma as the app server
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 4.3'
 gem 'react-rails'
 
 # Use CoffeeScript for .coffee assets and views
